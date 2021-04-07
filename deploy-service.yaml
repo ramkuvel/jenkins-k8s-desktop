@@ -21,7 +21,7 @@ spec:
         track: stable
     spec:
       containers:
-      - image: system-api-external-test:0.1
+      - image: rkulandaivel/mule4-sys-api:latest
         name: mule-system
         ports:
         - containerPort: 8081
@@ -32,8 +32,6 @@ kind: Service
 metadata:
   name: mule-system-external
 spec:
-  #type: ExternalName
-  #externalName: test.system-api.example.com
   type: LoadBalancer
   ports:
     - port: 9091
