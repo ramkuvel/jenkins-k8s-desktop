@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mule-system
+  labels:
+    app: mule-system
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: mule-system 
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 2
+      maxUnavailable: 1
+  template:
+    metadata:
+      labels:
+        app: mule-system
+        track: stable
+    spec:
+      containers:
+      - image: system-api-external-test:0.1
+        name: mule-system
+        ports:
+        - containerPort: 8081
+          name: mule-system
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mule-system-external
+spec:
+  #type: ExternalName
+  #externalName: test.system-api.example.com
+  type: LoadBalancer
+  ports:
+    - port: 9091
+      targetPort : 8081
+      name: mule-system-external
+  selector:
+    app: mule-system
